@@ -34,6 +34,8 @@ class Chess
   end
 
   def valid_piece?(pos)
+    return false if check? && !valid_move?(pos, @last_move)
+
     return false unless pos.class == Array
     piece = @board[pos[0]][pos[1]]
     if @turn == 'White'
