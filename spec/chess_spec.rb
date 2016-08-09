@@ -27,14 +27,17 @@ describe Chess do
               [['.', '.', '.', '.', '.', '.', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
                ['.', '♘', '.', '.', '.', '.', '.', '.'],
-               ['.', '.', '.', '♔', '.', '.', '.', '.'],
+               ['.', '.', '.', '♕', '.', '.', '.', '.'],
                ['.', '.', '♘', '.', '.', '.', '.', '.'],
-               ['.', '.', '♘', '.', '.', '♘', '.', '.'],
+               ['.', '.', '♘', '.', '.', '♞', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.']])
-      expect(chess.send(:valid_move_for_king?, [3,3], [2,4])).to eql(true)
-      expect(chess.send(:valid_move_for_king?, [3,3], [2,5])).to eql(false)
-      expect(chess.send(:valid_move_for_king?, [3,3], [4,2])).to eql(false)
+      expect(chess.send(:valid_move_for_queen?, [3,3], [7,3])).to eql(true)
+      expect(chess.send(:valid_move_for_queen?, [3,3], [3,7])).to eql(true)
+      expect(chess.send(:valid_move_for_queen?, [3,3], [5,5])).to eql(true)
+      expect(chess.send(:valid_move_for_queen?, [3,3], [6,0])).to eql(false)
+      expect(chess.send(:valid_move_for_queen?, [3,3], [1,2])).to eql(false)
+      
     end 
   end
 end
