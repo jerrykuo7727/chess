@@ -33,11 +33,22 @@ class Chess
   end
 
   def valid_piece?(pos)
+    return false unless pos.class == Array
     piece = @board[pos[0]][pos[1]]
     if @turn == 'White'
-      '♖♘♗♕♔♙'.include?(piece)
+      if '♖♘♗♕♔♙'.include?(piece)
+        true
+      else
+        puts "Invalid choice! Please try again."
+        false
+      end
     else
-      '♜♞♝♛♚♟'.include?(piece)
+      if '♜♞♝♛♚♟'.include?(piece)
+        true
+      else
+        puts "Invalid choice! Please try again."
+        false
+      end
     end
   end
 
@@ -49,7 +60,26 @@ class Chess
     end
     return [56 - piece[1].ord, piece[0].ord - 97]
   end
-  
+
+  def valid_move?(pos, move)
+    return false unless pos.class == Array && move.class == Array
+    piece = @board[pos[0]][pos[1]]
+    case piece
+    when '♔', '♚'
+      puts 'King~~'
+    when '♕', '♛'
+      puts 'Queen~~'
+    when '♖', '♜'
+      puts 'Rook~~'
+    when '♗', '♝'
+      puts 'Bishop~~'
+    when '♘', '♞'
+      puts 'Knight~~'
+    when '♙', '♟'
+      puts 'Pawn~~'
+    end
+  end
+
   private
 
   def valid_input?(input)
