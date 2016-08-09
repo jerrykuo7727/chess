@@ -126,14 +126,43 @@ class Chess
 
   def checkmate?
     king = find_king
+    king_can_move = true
     paths = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
     until paths.empty?
       path = paths.pop
       pos = [king[0] + path[0], king[1] + path[1]]
       next if out_of_board?(pos)
-      return false if valid_move_for_king?(king, pos)
+      king_can_move = false if valid_move_for_king?(king, pos)
     end
-    true
+    return false if king_can_move
+
+    only_king = true
+    @board.each_with_index do |arr, row|
+      arr.each_with_index do |e, col|
+        if '♖♘♗♕♙'.include?(e) && @turn == 'White'
+          only_king = false
+          break
+        elsif '♜♞♝♛♟'.include?(e) && @turn == 'Black'
+          only_king = false
+          break
+        end
+      end
+      break if only_king = true
+    end
+    return true if only_king
+
+    if check?
+      @board.each_with_index do |arr, row|
+        arr.each_with_index do |e, col|
+          if @turn == 'White'
+            return false if '♖♘♗♕♙'.include?(e) && valid_move?([row, col], @last_move)
+          else
+            return false if '♜♞♝♛♟'.include?(e) && valid_move?([row, col], @last_move)
+          end
+        end
+      end
+    end
+    return true
   end
 
   def switch
