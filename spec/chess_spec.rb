@@ -83,16 +83,16 @@ describe Chess do
       chess.instance_variable_set(:@board,
               [['.', '.', '.', '♘', '.', '.', '♘', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
-               ['.', '♘', '.', '.', '.', '♘', '.', '.'],
+               ['.', '♘', '.', '.', '.', '♖', '.', '.'],
                ['.', '.', '.', '♘', '.', '♘', '.', '.'],
                ['.', '.', '♘', '.', '.', '.', '.', '.'],
                ['.', '.', '.', '.', '♞', '.', '.', '.'],
                ['.', '.', '.', '♞', '.', '.', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.']])
-      expect(chess.send(:valid_move_for_knight?, [3,3], [2,4])).to eql(true)
+      expect(chess.send(:valid_move_for_knight?, [3,3], [1,4])).to eql(true)
       expect(chess.send(:valid_move_for_knight?, [3,3], [5,2])).to eql(true)
       expect(chess.send(:valid_move_for_knight?, [3,3], [5,4])).to eql(true)
-      expect(chess.send(:valid_move_for_knight?, [3,3], [3,7])).to eql(false)
+      expect(chess.send(:valid_move_for_knight?, [3,3], [2,5])).to eql(false)
     end
   end
 end

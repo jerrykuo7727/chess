@@ -126,6 +126,14 @@ class Chess
     true
   end
 
+  def valid_move_for_knight?(pos, move)
+    path = [move[0] - pos[0], move[1] - pos[1]]
+    return false unless [[1,2],[2,1],[2,-1],[1,-2],[-1,-2],[-2,-1],[-2,1],[-1,2]].include?(path)
+
+    return false unless valid_goal?(pos, move)
+    true
+  end
+  
   def get_unit_path(path)
     unit = [0, 0]
     unit[0] = -1 if path[0] <= -1
