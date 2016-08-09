@@ -136,6 +136,11 @@ class Chess
     true
   end
 
+  def switch
+    @turn = 'Black' if @turn == 'White'
+    @turn = 'White' if @turn == 'Black'
+  end
+
   private
 
   def find_king
