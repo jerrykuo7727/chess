@@ -71,6 +71,7 @@ class Chess
       puts 'Knight~~'
     when '♙', '♟'
       puts 'Pawn~~'
+      # To-do: can change to any piece if pawn reach the end
     end
   end
 
@@ -85,7 +86,7 @@ class Chess
   end
 
   def valid_move_for_king?(pos, move)
-    #TO-DO: cant move to a checked position
+    # To-do: cant move to a checked position
     return false unless [-1, 0, 1].include?(move[0] - pos[0])
     return false unless [-1, 0, 1].include?(move[1] - pos[1])
 
@@ -133,7 +134,7 @@ class Chess
     return false unless valid_goal?(pos, move)
     true
   end
-  
+
   def get_unit_path(path)
     unit = [0, 0]
     unit[0] = -1 if path[0] <= -1
