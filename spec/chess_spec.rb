@@ -24,7 +24,7 @@ describe Chess do
   describe '#valid_move_for_queen?' do
     it 'returns true when clear to move' do
       chess.instance_variable_set(:@board,
-              [['.', '.', '.', '.', '.', '.', '.', '.'],
+              [['.', '.', '.', '.', '.', '.', '♘', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
                ['.', '♘', '.', '.', '.', '.', '.', '.'],
                ['.', '.', '.', '♕', '.', '.', '.', '.'],
@@ -37,7 +37,7 @@ describe Chess do
       expect(chess.send(:valid_move_for_queen?, [3,3], [5,5])).to eql(true)
       expect(chess.send(:valid_move_for_queen?, [3,3], [6,0])).to eql(false)
       expect(chess.send(:valid_move_for_queen?, [3,3], [1,2])).to eql(false)
-      
+      expect(chess.send(:valid_move_for_queen?, [3,3], [0,6])).to eql(false)
     end 
   end
 end
