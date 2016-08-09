@@ -91,6 +91,7 @@ class Chess
   end
 
   def valid_move_for_king?(pos, move)
+    #TO-DO: Checkmate judgement
     return false unless [-1, 0, 1].include?(move[0] - pos[0])
     return false unless [-1, 0, 1].include?(move[1] - pos[1])
 
