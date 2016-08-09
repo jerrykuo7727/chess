@@ -107,6 +107,7 @@ class Chess
   end
 
   def move(curr, goal)
+<<<<<<< HEAD
     piece = @board[curr[0]][curr[1]]
     @board[curr[0]][curr[1]] = '.'
     @board[goal[0]][goal[1]] = piece
@@ -234,6 +235,11 @@ class Chess
   def gameover
     puts 'Black wins the game!' if @turn == 'White'
     puts 'White wins the game!' if @turn == 'Black'
+=======
+    piece = @board[pos[0]][pos[1]]
+    @board[curr[0]][curr[1]] = '.'
+    @board[goal[0]][goal[1]] = piece
+>>>>>>> dadf2c8138adbb633c0b0c5fcbfa202b738b6b62
   end
 
   private
