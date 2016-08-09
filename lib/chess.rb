@@ -121,6 +121,17 @@ class Chess
     true
   end
 
+  def valid_move_for_rook?(pos, move)
+    path = [move[0] - pos[0], move[1] - pos[1]]
+    return false unless path[0] == 0 || path[1] == 0
+
+    unit = get_unit_path(path)
+    return false if path_blocked?(pos, unit, move)
+
+    return false unless valid_goal?(pos, move)
+    true
+  end
+
   def get_unit_path(path)
     unit = [0, 0]
     unit[0] = -1 if path[0] <= -1
