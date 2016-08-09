@@ -102,10 +102,20 @@ class Chess
 
   def valid_input?(input)
     return false unless input.class == String
-    return false unless input.length == 2
-    return false unless 'ABCDEFGHabcdefgh'.include?(input[0])
-    return false unless '12345678'.include?(input[1])
-    return true
+    if input.length != 2
+      puts "Invalid input! Please try again."
+      false
+    else
+      valid = true
+      valid = false unless 'ABCDEFGHabcdefgh'.include?(input[0])
+      valid = false unless '12345678'.include?(input[1])
+      unless valid
+        puts "Invalid input! Please try again."
+        false
+      end
+    true
+    end
+    
   end
 
   def valid_move_for_king?(pos, move)

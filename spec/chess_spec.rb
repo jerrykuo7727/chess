@@ -68,13 +68,14 @@ describe Chess do
                ['.', '.', '.', '♖', '.', '♘', '.', '.'],
                ['.', '.', '♘', '.', '.', '.', '.', '.'],
                ['.', '.', '♘', '.', '.', '♞', '.', '.'],
-               ['.', '.', '.', '♞', '.', '.', '.', '.'],
-               ['.', '.', '.', '.', '.', '.', '.', '.']])
+               ['♘', '.', '.', '♞', '.', '.', '.', '.'],
+               ['♖', '.', '.', '.', '.', '.', '.', '.']])
       expect(chess.send(:valid_move_for_rook?, [3,3], [3,1])).to eql(true)
       expect(chess.send(:valid_move_for_rook?, [3,3], [6,3])).to eql(true)
       expect(chess.send(:valid_move_for_rook?, [3,3], [0,3])).to eql(false)
       expect(chess.send(:valid_move_for_rook?, [3,3], [3,7])).to eql(false)
       expect(chess.send(:valid_move_for_rook?, [3,3], [0,0])).to eql(false)
+      expect(chess.send(:valid_move_for_rook?, [7,0], [5,0])).to eql(false)
     end
   end
 
