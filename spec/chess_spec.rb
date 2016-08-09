@@ -160,6 +160,8 @@ describe Chess do
   describe '#check?' do
     context 'given no parameters' do
       it 'returns true when the king is checked' do
+        chess.instance_variable_set(:@turn, 'Black')
+        chess.instance_variable_set(:@last_move, [2,7])
         chess.instance_variable_set(:@board, 
               [['.', '.', '.', '.', '.', '♚', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
@@ -170,6 +172,8 @@ describe Chess do
                ['.', '.', '.', '.', '.', '.', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.']])
         expect(chess.check?).to eql(true)
+
+        chess.instance_variable_set(:@last_move, [2,6])
         chess.instance_variable_set(:@board, 
               [['.', '.', '.', '.', '.', '♚', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
@@ -181,7 +185,8 @@ describe Chess do
                ['.', '.', '.', '.', '.', '.', '.', '.']])
         expect(chess.check?).to eql(false)
 
-        chess.instance_variable_set(:@turn, 'Black')
+        chess.instance_variable_set(:@turn, 'White')
+        chess.instance_variable_set(:@last_move, [5,4])
         chess.instance_variable_set(:@board, 
               [['.', '.', '.', '.', '.', '♚', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
@@ -191,7 +196,9 @@ describe Chess do
                ['.', '.', '♘', '.', '♞', '♘', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.']])
+
         expect(chess.check?).to eql(true)
+        chess.instance_variable_set(:@last_move, [5,4])
         chess.instance_variable_set(:@board, 
               [['.', '.', '.', '.', '.', '♚', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
@@ -207,11 +214,12 @@ describe Chess do
 
     context 'given a specific position' do
       it 'returns true if the position is checked' do
+        chess.instance_variable_set(:@turn, 'Black')
         chess.instance_variable_set(:@board, 
               [['.', '.', '.', '.', '.', '♚', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],
                ['.', '♘', '.', '♘', '.', '.', '.', '.'],
-               ['.', '.', '.', '♔', '♘', '.', '.', '.'],
+               ['.', '.', '.', '♕', '♘', '.', '.', '.'],
                ['.', '.', '♘', '.', '.', '.', '.', '.'],
                ['.', '.', '♘', '.', '♞', '♘', '.', '.'],
                ['.', '.', '.', '.', '.', '.', '.', '.'],

@@ -9,6 +9,7 @@ class Chess
               ['♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙'],
               ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖']]
     @turn = 'White'
+    @last_move = nil
   end
 
   def display
@@ -61,37 +62,31 @@ class Chess
     case piece
     when '♔', '♚'
       unless valid_move_for_king?(pos, move)
-        puts "Invalid move! Please try again."
         return false
       end
       true
     when '♕', '♛'
       unless valid_move_for_queen?(pos, move)
-        puts "Invalid move! Please try again."
         return false
       end
       true
     when '♖', '♜'
       unless valid_move_for_rook?(pos, move)
-        puts "Invalid move! Please try again."
         return false
       end
       true
     when '♗', '♝'
       unless valid_move_for_bishop?(pos, move)
-        puts "Invalid move! Please try again."
         return false
       end
       true
     when '♘', '♞'
       unless valid_move_for_knight?(pos, move)
-        puts "Invalid move! Please try again."
         return false
       end
       true
     when '♙', '♟'
       unless valid_move_for_pawn?(pos, move)
-        puts "Invalid move! Please try again."
         return false
       end
       true
@@ -102,9 +97,36 @@ class Chess
     piece = @board[curr[0]][curr[1]]
     @board[curr[0]][curr[1]] = '.'
     @board[goal[0]][goal[1]] = piece
+    @last_move = goal
+  end
+
+  def check?(pos=nil)
+    if pos == nil
+      king = find_king
+      valid_move?(@last_move, king)
+    else
+      @board.each_with_index do |arr, row|
+        arr.each_with_index do |e, col|
+          return true if @turn == 'White' && '♜♞♝♛♚♟'.include?(e) && valid_move?([row, col], pos)
+          return true if @turn == 'Black' && '♖♘♗♕♔♙'.include?(e) && valid_move?([row, col], pos)
+        end
+      end
+      false
+    end
   end
 
   private
+
+  def find_king
+    king = nil
+    @board.each_with_index do |arr, row|
+      arr.each_with_index do |e, col|
+        king = [row, col] if e == '♔' && @turn == 'White'
+        king = [row, col] if e == '♚' && @turn == 'Black'
+      end
+    end
+    king
+  end
 
   def valid_input?(input)
     return false unless input.class == String
