@@ -77,4 +77,22 @@ describe Chess do
       expect(chess.send(:valid_move_for_rook?, [3,3], [0,0])).to eql(false)
     end
   end
+
+  describe '#valid_move_for_knight?' do
+    it 'returns true when clear to move' do
+      chess.instance_variable_set(:@board,
+              [['.', '.', '.', '♘', '.', '.', '♘', '.'],
+               ['.', '.', '.', '.', '.', '.', '.', '.'],
+               ['.', '♘', '.', '.', '.', '♘', '.', '.'],
+               ['.', '.', '.', '♘', '.', '♘', '.', '.'],
+               ['.', '.', '♘', '.', '.', '.', '.', '.'],
+               ['.', '.', '.', '.', '♞', '.', '.', '.'],
+               ['.', '.', '.', '♞', '.', '.', '.', '.'],
+               ['.', '.', '.', '.', '.', '.', '.', '.']])
+      expect(chess.send(:valid_move_for_knight?, [3,3], [2,4])).to eql(true)
+      expect(chess.send(:valid_move_for_knight?, [3,3], [5,2])).to eql(true)
+      expect(chess.send(:valid_move_for_knight?, [3,3], [5,4])).to eql(true)
+      expect(chess.send(:valid_move_for_knight?, [3,3], [3,7])).to eql(false)
+    end
+  end
 end

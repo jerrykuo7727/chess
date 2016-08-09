@@ -36,19 +36,13 @@ class Chess
     return false unless pos.class == Array
     piece = @board[pos[0]][pos[1]]
     if @turn == 'White'
-      if '♖♘♗♕♔♙'.include?(piece)
-        true
-      else
-        puts "Invalid choice! Please try again."
-        false
-      end
+      return true if '♖♘♗♕♔♙'.include?(piece)
+      puts "Invalid choice! Please try again."
+      false
     else
-      if '♜♞♝♛♚♟'.include?(piece)
-        true
-      else
-        puts "Invalid choice! Please try again."
-        false
-      end
+      return true if '♜♞♝♛♚♟'.include?(piece)
+      puts "Invalid choice! Please try again."
+      false
     end
   end
 
