@@ -36,11 +36,11 @@ class Chess
     return false unless pos.class == Array
     piece = @board[pos[0]][pos[1]]
     if @turn == 'White'
-      return true if '♖♘♗♕♔♙'.include?(piece)
+      return true if '♖♘♗♕♔♙'.include?(piece) && can_move?(pos)
       puts "Invalid choice! Please try again."
       false
     else
-      return true if '♜♞♝♛♚♟'.include?(piece)
+      return true if '♜♞♝♛♚♟'.include?(piece) && can_move?(pos)
       puts "Invalid choice! Please try again."
       false
     end
@@ -62,37 +62,37 @@ class Chess
     when '♔', '♚'
       unless valid_move_for_king?(pos, move)
         puts "Invalid move! Please try again."
-        false
+        return false
       end
       true
     when '♕', '♛'
       unless valid_move_for_queen?(pos, move)
         puts "Invalid move! Please try again."
-        false
+        return false
       end
       true
     when '♖', '♜'
       unless valid_move_for_rook?(pos, move)
         puts "Invalid move! Please try again."
-        false
+        return false
       end
       true
     when '♗', '♝'
       unless valid_move_for_bishop?(pos, move)
         puts "Invalid move! Please try again."
-        false
+        return false
       end
       true
     when '♘', '♞'
       unless valid_move_for_knight?(pos, move)
         puts "Invalid move! Please try again."
-        false
+        return false
       end
       true
     when '♙', '♟'
       unless valid_move_for_pawn?(pos, move)
         puts "Invalid move! Please try again."
-        false
+        return false
       end
       true
     end
@@ -115,7 +115,75 @@ class Chess
       end
     true
     end
-    
+  end
+
+  def can_move?(pos)
+    piece = @board[pos[0]][pos[1]]
+    case piece
+    when '♘', '♞'
+      paths = [[1,2],[2,1],[2,-1],[1,-2],[-1,-2],[-2,-1],[-2,1],[-1,2]]
+      until paths.empty?
+        path = paths.pop
+        move = [pos[0] + path[0], pos[1] + path[1]]
+        next if out_of_board?(move)
+        return true if valid_move_for_knight?(pos, move)
+      end
+      false
+    when '♙'
+      paths = [[-1,0],[-2,0],[-1,1],[-1,-1]]
+      until paths.empty?
+        path = paths.pop
+        move = [pos[0] + path[0], pos[1] + path[1]]
+        next if out_of_board?(move)
+        return true if valid_move_for_pawn?(pos, move)
+      end
+      false
+    when '♟'
+      paths = [[1,0],[2,0],[1,1],[1,-1]]
+      until paths.empty?
+        path = paths.pop
+        move = [pos[0] + path[0], pos[1] + path[1]]
+        next if out_of_board?(move)
+        return true if valid_move_for_pawn?(pos, move)
+      end
+      false
+    when '♔', '♚'
+      paths = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
+      until paths.empty?
+        path = paths.pop
+        move = [pos[0] + path[0], pos[1] + path[1]]
+        next if out_of_board?(move)
+        return true if valid_move_for_king?(pos, move)
+      end
+      false
+    when '♕', '♛'
+      paths = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
+      until paths.empty?
+        path = paths.pop
+        move = [pos[0] + path[0], pos[1] + path[1]]
+        next if out_of_board?(move)
+        return true if valid_move_for_queen?(pos, move)
+      end
+      false
+    when '♖', '♜'
+      paths = [[0,1],[1,0],[0,-1],[-1,0]]
+      until paths.empty?
+        path = paths.pop
+        move = [pos[0] + path[0], pos[1] + path[1]]
+        next if out_of_board?(move)
+        return true if valid_move_for_rook?(pos, move)
+      end
+      false
+    when '♗', '♝'
+      paths = [[1,1],[1,-1],[-1,-1],[-1,1]]
+      until paths.empty?
+        path = paths.pop
+        move = [pos[0] + path[0], pos[1] + path[1]]
+        next if out_of_board?(move)
+        return true if valid_move_for_bishop?(pos, move)
+      end
+      false
+    end
   end
 
   def valid_move_for_king?(pos, move)
@@ -232,6 +300,11 @@ class Chess
     goal_piece = @board[goal[0]][goal[1]]
     return false if '♖♘♗♕♔♙'.include?(curr_piece) && '♖♘♗♕♔♙'.include?(goal_piece)
     return false if '♜♞♝♛♚♟'.include?(curr_piece) && '♜♞♝♛♚♟'.include?(goal_piece)
+    true
+  end
+
+  def out_of_board?(pos)
+    return false if (0..7).include?(pos[0]) && (0..7).include?(pos[1])
     true
   end
 end

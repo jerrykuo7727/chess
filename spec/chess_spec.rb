@@ -136,4 +136,24 @@ describe Chess do
       expect(chess.send(:valid_move_for_pawn?, [2,4], [4,4])).to eql(false)
     end
   end
+
+  describe '#can_move?' do
+    it 'returns true when the piece can possibly move' do
+      chess.instance_variable_set(:@board,
+              [['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
+               ['♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟'],
+               ['.', '.', '.', '.', '.', '.', '.', '.'],
+               ['.', '.', '.', '.', '.', '.', '.', '.'],
+               ['.', '.', '.', '.', '.', '.', '.', '.'],
+               ['.', '.', '.', '.', '.', '.', '.', '.'],
+               ['♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙'],
+               ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖']])
+      expect(chess.send(:can_move?, [6,0])).to eql(true)
+      expect(chess.send(:can_move?, [7,1])).to eql(true)
+      expect(chess.send(:can_move?, [7,0])).to eql(false)
+      expect(chess.send(:can_move?, [7,2])).to eql(false)
+      expect(chess.send(:can_move?, [7,3])).to eql(false)
+      expect(chess.send(:can_move?, [7,4])).to eql(false)
+    end
+  end
 end
