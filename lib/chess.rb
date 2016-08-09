@@ -1,6 +1,4 @@
 class Chess
-  attr_reader :board
-
   def initialize
     @board = [['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
               ['♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟'],
@@ -10,6 +8,7 @@ class Chess
               ['.', '.', '.', '.', '.', '.', '.', '.'],
               ['♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙'],
               ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖']]
+    @turn = 'White'
   end
 
   def display
@@ -23,14 +22,26 @@ class Chess
     end
     puts '   ａ ｂ ｃ ｄ ｅ ｆ ｇ ｈ '
   end
-
+  
   def ask_piece
     piece = nil
     until valid_input?(piece)
-      print 'Which piece to move: '
+      print "(#{@turn}) Which piece to move: "
       piece = gets.chomp.downcase
     end
+    return [56 - piece[1].ord, piece[0].ord - 97]
   end
+
+  def valid_piece?(pos)
+    piece = @board[pos[0]][pos[1]]
+    if @turn == 'White'
+      '♖♘♗♕♔♙'.include?(piece)
+    else
+      '♜♞♝♛♚♟'.include?(piece)
+    end
+  end
+
+  private
 
   def valid_input?(input)
     return false unless input.class == String
@@ -42,4 +53,3 @@ class Chess
 end
 
 chess = Chess.new
-p chess.valid_input?('A0')
