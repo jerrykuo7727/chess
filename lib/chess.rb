@@ -10,6 +10,7 @@ class Chess
               ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖']]
     @turn = 'White'
     @last_move = nil
+    @checked = false
   end
 
   def display
@@ -34,17 +35,15 @@ class Chess
   end
 
   def valid_piece?(pos)
-    return false if check? && !valid_move?(pos, @last_move)
-
     return false unless pos.class == Array
+    return false if @checked && !valid_move?(pos, @last_move)
+
     piece = @board[pos[0]][pos[1]]
     if @turn == 'White'
       return true if '♖♘♗♕♔♙'.include?(piece) && can_move?(pos)
-      puts "Invalid choice! Please try again."
       false
     else
       return true if '♜♞♝♛♚♟'.include?(piece) && can_move?(pos)
-      puts "Invalid choice! Please try again."
       false
     end
   end
@@ -60,6 +59,8 @@ class Chess
 
   def valid_move?(pos, move)
     return false unless pos.class == Array && move.class == Array
+    return false if @checked && move != @last_move
+    
     piece = @board[pos[0]][pos[1]]
     case piece
     when '♔', '♚'
@@ -100,25 +101,39 @@ class Chess
     @board[curr[0]][curr[1]] = '.'
     @board[goal[0]][goal[1]] = piece
     @last_move = goal
+    @checked = false
   end
 
   def check?(pos=nil)
     if pos == nil
       king = find_king
-      valid_move?(@last_move, king)
+      if valid_move?(@last_move, king)
+        @checked == true
+        return true
+      else
+        return false
+      end
     else
       @board.each_with_index do |arr, row|
         arr.each_with_index do |e, col|
           if @turn == 'White'
-            return true if '♜♞♝♛♟'.include?(e) && valid_move?([row, col], pos)
+            if '♜♞♝♛♟'.include?(e) && valid_move?([row, col], pos)
+              return true
+            end
             moves = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
             path = [pos[0] - row, pos[1] - col]
-            return true if e == '♚' && moves.include?(path)
+            if e == '♚' && moves.include?(path)
+              return true
+            end
           else
-            return true if '♖♘♗♕♙'.include?(e) && valid_move?([row, col], pos)
+            if '♖♘♗♕♙'.include?(e) && valid_move?([row, col], pos)
+              return true
+            end
             moves = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
             path = [pos[0] - row, pos[1] - col]
-            return true if e == '♔' && moves.include?(path)
+            if e == '♔' && moves.include?(path)
+              return true 
+            end
           end
         end
       end
@@ -128,32 +143,35 @@ class Chess
 
   def checkmate?
     king = find_king
-    king_can_move = true
+    king_can_move = false
     paths = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
     until paths.empty?
       path = paths.pop
       pos = [king[0] + path[0], king[1] + path[1]]
       next if out_of_board?(pos)
-      king_can_move = false if valid_move_for_king?(king, pos)
+      king_can_move = true if valid_move_for_king?(king, pos)
     end
     return false if king_can_move
 
     only_king = true
     @board.each_with_index do |arr, row|
+      found = false
       arr.each_with_index do |e, col|
         if '♖♘♗♕♙'.include?(e) && @turn == 'White'
           only_king = false
+          found = true
           break
         elsif '♜♞♝♛♟'.include?(e) && @turn == 'Black'
           only_king = false
+          found = true
           break
         end
       end
-      break if only_king = true
+      break if found
     end
     return true if only_king
 
-    if check?
+    if @checked
       @board.each_with_index do |arr, row|
         arr.each_with_index do |e, col|
           if @turn == 'White'
@@ -163,8 +181,9 @@ class Chess
           end
         end
       end
+      return true
     end
-    return true
+    false
   end
 
   def switch
@@ -280,7 +299,6 @@ class Chess
   end
 
   def valid_move_for_king?(pos, move)
-    # To-do: cant move to a checked position
     return false if check?(move)
     return false unless [-1, 0, 1].include?(move[0] - pos[0])
     return false unless [-1, 0, 1].include?(move[1] - pos[1])
