@@ -66,7 +66,7 @@ class Chess
     piece = @board[pos[0]][pos[1]]
     case piece
     when '♔', '♚'
-      puts 'King~~'
+      valid_move_for_king?(pos, move)
     when '♕', '♛'
       puts 'Queen~~'
     when '♖', '♜'
@@ -87,6 +87,13 @@ class Chess
     return false unless input.length == 2
     return false unless 'ABCDEFGHabcdefgh'.include?(input[0])
     return false unless '12345678'.include?(input[1])
+    return true
+  end
+
+  def valid_move_for_king?(pos, move)
+    return false unless [-1, 0, 1].include?(move[0] - pos[0])
+    return false unless [-1, 0, 1].include?(move[1] - pos[1])
+    return false unless @board[move[0]][move[1]] == '.'
     return true
   end
 end
