@@ -93,7 +93,9 @@ class Chess
   def valid_move_for_king?(pos, move)
     return false unless [-1, 0, 1].include?(move[0] - pos[0])
     return false unless [-1, 0, 1].include?(move[1] - pos[1])
-    return false unless @board[move[0]][move[1]] == '.'
+    goal = @board[move[0]][move[1]]
+    return false if @turn == 'White' && '♖♘♗♕♔♙'.include?(goal)
+    return false if @turn == 'Black' && '♜♞♝♛♚♟'.include?(goal)
     return true
   end
 end
