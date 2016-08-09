@@ -15,6 +15,7 @@ class Chess
   end
 
   def display
+    puts
     puts '   ａ ｂ ｃ ｄ ｅ ｆ ｇ ｈ'
     @board.each_with_index do |row, i|
       print (8 - i).to_s
@@ -112,6 +113,31 @@ class Chess
     @last_move = goal
     @checked = false
     @saving = false
+
+    if (piece == '♙' && goal[0] == 0) || (piece == '♟' && goal[0] == 7)
+      display
+      input = nil
+      loop do 
+        print "(#{@turn})Turn the pawn into: "
+        input = gets.chomp.downcase
+        break if ['queen', 'rook', 'bishop', 'knight'].include?(input)
+        puts "Invalid piece! Please try again."
+      end
+      case input
+      when 'queen'
+        @board[goal[0]][goal[1]] = '♕' if piece == '♙'
+        @board[goal[0]][goal[1]] = '♛' if piece == '♟'
+      when 'rook'
+        @board[goal[0]][goal[1]] = '♖' if piece == '♙'
+        @board[goal[0]][goal[1]] = '♜' if piece == '♟'
+      when 'bishop'
+        @board[goal[0]][goal[1]] = '♗' if piece == '♙'
+        @board[goal[0]][goal[1]] = '♝' if piece == '♟'
+      when 'knight'
+        @board[goal[0]][goal[1]] = '♘' if piece == '♙'
+        @board[goal[0]][goal[1]] = '♞' if piece == '♟'
+      end
+    end
   end
 
   def check?(pos=nil)
