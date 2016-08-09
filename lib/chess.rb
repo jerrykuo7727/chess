@@ -107,12 +107,33 @@ class Chess
     else
       @board.each_with_index do |arr, row|
         arr.each_with_index do |e, col|
-          return true if @turn == 'White' && '♜♞♝♛♚♟'.include?(e) && valid_move?([row, col], pos)
-          return true if @turn == 'Black' && '♖♘♗♕♔♙'.include?(e) && valid_move?([row, col], pos)
+          if @turn == 'White'
+            return true if '♜♞♝♛♟'.include?(e) && valid_move?([row, col], pos)
+            moves = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
+            path = [pos[0] - row, pos[1] - col]
+            return true if e == '♚' && moves.include?(path)
+          else
+            return true if '♖♘♗♕♙'.include?(e) && valid_move?([row, col], pos)
+            moves = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
+            path = [pos[0] - row, pos[1] - col]
+            return true if e == '♔' && moves.include?(path)
+          end
         end
       end
       false
     end
+  end
+
+  def checkmate?
+    king = find_king
+    paths = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
+    until paths.empty?
+      path = paths.pop
+      pos = [king[0] + path[0], king[1] + path[1]]
+      next if out_of_board?(pos)
+      return false if valid_move_for_king?(king, pos)
+    end
+    true
   end
 
   private
@@ -216,6 +237,7 @@ class Chess
 
   def valid_move_for_king?(pos, move)
     # To-do: cant move to a checked position
+    return false if check?(move)
     return false unless [-1, 0, 1].include?(move[0] - pos[0])
     return false unless [-1, 0, 1].include?(move[1] - pos[1])
 
