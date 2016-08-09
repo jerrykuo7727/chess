@@ -141,6 +141,11 @@ class Chess
     @turn = 'White' if @turn == 'Black'
   end
 
+  def gameover
+    puts 'Black wins the game!' if @turn == 'White'
+    puts 'White wins the game!' if @turn == 'Black'
+  end
+
   private
 
   def find_king
