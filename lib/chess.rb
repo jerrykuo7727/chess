@@ -98,6 +98,12 @@ class Chess
     end
   end
 
+  def move(curr, goal)
+    piece = @board[curr[0]][curr[1]]
+    @board[curr[0]][curr[1]] = '.'
+    @board[goal[0]][goal[1]] = piece
+  end
+
   private
 
   def valid_input?(input)
