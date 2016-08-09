@@ -11,6 +11,7 @@ class Chess
     @turn = 'White'
     @last_move = nil
     @checked = false
+    @saving = false
   end
 
   def display
@@ -40,11 +41,19 @@ class Chess
 
     piece = @board[pos[0]][pos[1]]
     if @turn == 'White'
-      return true if '♖♘♗♕♔♙'.include?(piece) && can_move?(pos)
-      false
+      if '♖♘♗♕♔♙'.include?(piece) && can_move?(pos)
+        @saving = true if @checked
+        return true 
+      else
+        false
+      end
     else
-      return true if '♜♞♝♛♚♟'.include?(piece) && can_move?(pos)
-      false
+      if '♜♞♝♛♚♟'.include?(piece) && can_move?(pos)
+        @saving = true if @checked
+        return true
+      else
+        false
+      end
     end
   end
 
@@ -59,7 +68,7 @@ class Chess
 
   def valid_move?(pos, move)
     return false unless pos.class == Array && move.class == Array
-    return false if @checked && move != @last_move
+    return false if @saving && move != @last_move
     
     piece = @board[pos[0]][pos[1]]
     case piece
@@ -102,15 +111,17 @@ class Chess
     @board[goal[0]][goal[1]] = piece
     @last_move = goal
     @checked = false
+    @saving = false
   end
 
   def check?(pos=nil)
     if pos == nil
       king = find_king
       if valid_move?(@last_move, king)
-        @checked == true
+        @checked = true
         return true
       else
+        @checked = false
         return false
       end
     else
