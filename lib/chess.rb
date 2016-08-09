@@ -137,8 +137,11 @@ class Chess
   end
 
   def switch
-    @turn = 'Black' if @turn == 'White'
-    @turn = 'White' if @turn == 'Black'
+    if @turn == 'White'
+      @turn = 'Black'
+    else
+      @turn = 'White'
+    end
   end
 
   def gameover
