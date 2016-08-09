@@ -135,6 +135,45 @@ class Chess
     true
   end
 
+  def valid_move_for_pawn?(pos, move)
+    path = [move[0] - pos[0], move[1] - pos[1]]
+    curr_piece = @board[pos[0]][pos[1]]
+    goal_piece = @board[move[0]][move[1]]
+    if curr_piece == '♙'
+      case path
+      when [-1,0]
+        return false unless goal_piece == '.'
+        true
+      when [-2,0]
+        return false unless pos[0] == 6 
+        return false if path_blocked?(pos, [-1,0], move)
+        return false unless goal_piece == '.'
+        true
+      when [-1,1], [-1,-1]
+        return false unless '♜♞♝♛♚♟'.include?(goal_piece)
+        true
+      else
+        false
+      end
+    else
+      case path
+      when [1,0]
+        return false unless goal_piece == '.'
+        true
+      when [2,0]
+        return false unless pos[0] == 1
+        return false if path_blocked?(pos, [1,0], move)
+        return false unless goal_piece == '.'
+        true
+      when [1,1], [1,-1]
+        return false unless '♖♘♗♕♔♙'.include?(goal_piece)
+        true
+      else
+        false
+      end
+    end
+  end
+
   def get_unit_path(path)
     unit = [0, 0]
     unit[0] = -1 if path[0] <= -1
