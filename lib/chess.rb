@@ -1,3 +1,5 @@
+require 'yaml'
+
 class Chess
   def initialize
     @board = [['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
@@ -33,7 +35,13 @@ class Chess
       print "(#{@turn}) Which piece to move: "
       piece = gets.chomp.downcase
     end
-    return [56 - piece[1].ord, piece[0].ord - 97]
+    if piece == 'save'
+      return 'save'
+    elsif piece == 'load'
+      return 'load'
+    else
+      return [56 - piece[1].ord, piece[0].ord - 97]
+    end
   end
 
   def valid_piece?(pos)
@@ -64,7 +72,13 @@ class Chess
       print "(#{@turn}) Move piece to where: "
       piece = gets.chomp.downcase
     end
-    return [56 - piece[1].ord, piece[0].ord - 97]
+    if piece == 'save'
+      return 'save'
+    elsif piece == 'load'
+      return 'load'
+    else
+      return [56 - piece[1].ord, piece[0].ord - 97]
+    end
   end
 
   def valid_move?(pos, move)
@@ -107,7 +121,6 @@ class Chess
   end
 
   def move(curr, goal)
-<<<<<<< HEAD
     piece = @board[curr[0]][curr[1]]
     @board[curr[0]][curr[1]] = '.'
     @board[goal[0]][goal[1]] = piece
@@ -235,11 +248,6 @@ class Chess
   def gameover
     puts 'Black wins the game!' if @turn == 'White'
     puts 'White wins the game!' if @turn == 'Black'
-=======
-    piece = @board[pos[0]][pos[1]]
-    @board[curr[0]][curr[1]] = '.'
-    @board[goal[0]][goal[1]] = piece
->>>>>>> dadf2c8138adbb633c0b0c5fcbfa202b738b6b62
   end
 
   private
@@ -257,6 +265,8 @@ class Chess
 
   def valid_input?(input)
     return false unless input.class == String
+    return true if input == 'save' || input == 'load'
+
     if input.length != 2
       puts "Invalid input! Please try again."
       return false
