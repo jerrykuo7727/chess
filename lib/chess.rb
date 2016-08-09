@@ -41,6 +41,15 @@ class Chess
     end
   end
 
+  def ask_move
+    piece = nil
+    until valid_input?(piece)
+      print "(#{@turn}) Move piece to where: "
+      piece = gets.chomp.downcase
+    end
+    return [56 - piece[1].ord, piece[0].ord - 97]
+  end
+  
   private
 
   def valid_input?(input)
