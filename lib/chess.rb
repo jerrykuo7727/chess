@@ -104,14 +104,14 @@ class Chess
     return false unless input.class == String
     if input.length != 2
       puts "Invalid input! Please try again."
-      false
+      return false
     else
       valid = true
       valid = false unless 'ABCDEFGHabcdefgh'.include?(input[0])
       valid = false unless '12345678'.include?(input[1])
       unless valid
         puts "Invalid input! Please try again."
-        false
+        return false
       end
     true
     end
