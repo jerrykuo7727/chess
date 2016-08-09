@@ -60,18 +60,41 @@ class Chess
     piece = @board[pos[0]][pos[1]]
     case piece
     when '♔', '♚'
-      valid_move_for_king?(pos, move)
+      unless valid_move_for_king?(pos, move)
+        puts "Invalid move! Please try again."
+        false
+      end
+      true
     when '♕', '♛'
-      puts 'Queen~~'
+      unless valid_move_for_queen?(pos, move)
+        puts "Invalid move! Please try again."
+        false
+      end
+      true
     when '♖', '♜'
-      puts 'Rook~~'
+      unless valid_move_for_rook?(pos, move)
+        puts "Invalid move! Please try again."
+        false
+      end
+      true
     when '♗', '♝'
-      puts 'Bishop~~'
+      unless valid_move_for_bishop?(pos, move)
+        puts "Invalid move! Please try again."
+        false
+      end
+      true
     when '♘', '♞'
-      puts 'Knight~~'
+      unless valid_move_for_knight?(pos, move)
+        puts "Invalid move! Please try again."
+        false
+      end
+      true
     when '♙', '♟'
-      puts 'Pawn~~'
-      # To-do: can change to any piece if pawn reach the end
+      unless valid_move_for_pawn?(pos, move)
+        puts "Invalid move! Please try again."
+        false
+      end
+      true
     end
   end
 
@@ -202,6 +225,3 @@ class Chess
     true
   end
 end
-
-chess = Chess.new
-
