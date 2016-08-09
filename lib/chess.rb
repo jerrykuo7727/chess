@@ -106,10 +106,34 @@ class Chess
     return false unless path[1] == 0 || [-1, 0, 1].include?(1.0 * path[0] / path[1])
 
     unit = [0, 0]
-    unit[0] = -1 if path[0] < -1
-    unit[0] = 1 if path[0] > 1
-    unit[1] = -1 if path[1] < -1
-    unit[1] = 1 if path[1] > 1
+    unit[0] = -1 if path[0] <= -1
+    unit[0] = 1 if path[0] >= 1
+    unit[1] = -1 if path[1] <= -1
+    unit[1] = 1 if path[1] >= 1
+
+    curr = [pos[0] + unit[0], pos[1] + unit[1]]
+    until curr == move do
+      piece = @board[curr[0]][curr[1]]
+      return false unless piece == '.' 
+      curr[0] += unit[0]
+      curr[1] += unit[1]
+    end
+
+    goal = @board[move[0]][move[1]]
+    return false if @turn == 'White' && '♖♘♗♕♔♙'.include?(goal)
+    return false if @turn == 'Black' && '♜♞♝♛♚♟'.include?(goal)
+    return true
+  end
+
+  def valid_move_for_bishop?(pos, move)
+    path = [move[0] - pos[0], move[1] - pos[1]]
+    return false unless path[1] != 0 && [-1, 1].include?(1.0 * path[0] / path[1])
+
+    unit = [0, 0]
+    unit[0] = -1 if path[0] <= -1
+    unit[0] = 1 if path[0] >= 1
+    unit[1] = -1 if path[1] <= -1
+    unit[1] = 1 if path[1] >= 1
 
     curr = [pos[0] + unit[0], pos[1] + unit[1]]
     until curr == move do
@@ -127,3 +151,4 @@ class Chess
 end
 
 chess = Chess.new
+
